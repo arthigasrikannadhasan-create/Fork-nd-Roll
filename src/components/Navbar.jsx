@@ -1,0 +1,58 @@
+import React from "react";
+import { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+
+function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    navigate(`/?search=${encodeURIComponent(searchText.trim())}`);
+    setMenuOpen(false);
+  }
+
+  return (
+    <header className="navbar">
+      <Link to="/" className="logo" onClick={() => setMenuOpen(false)}>
+        <span className="logo-mark">C</span>
+        <span>CineScope</span>
+      </Link>
+
+      <button
+        className="menu-button"
+        type="button"
+        aria-label="Toggle navigation"
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav className={menuOpen ? "nav-content show" : "nav-content"}>
+        <div className="nav-links">
+          <NavLink to="/" onClick={() => setMenuOpen(false)}>
+            Home
+          </NavLink>
+          <NavLink to="/movies" onClick={() => setMenuOpen(false)}>
+            Movies
+          </NavLink>
+        </div>
+
+        <form className="nav-search" onSubmit={handleSubmit}>
+          <input
+            type="search"
+            placeholder="Search movies"
+            value={searchText}
+            onChange={(event) => setSearchText(event.target.value)}
+          />
+          <button type="submit">Search</button>
+        </form>
+      </nav>
+    </header>
+  );
+}
+
+export default Navbar;
